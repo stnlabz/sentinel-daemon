@@ -2,24 +2,26 @@
 ![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
 ![License](https://img.shields.io/badge/License-TBD-lightgrey)
 ![Sponsored](https://img.shields.io/badge/Sponsored-STN_Labz-blue)
+
 # sentinel-daemon
-The Sentinel Daemon for Ground, Space and Inter Terrestrial Security
+The Sentinel Daemon for Ground, Space and Interstellar Security
 
-## About
-This project is bound for Space, literally up to Low Earth Orbit (LEO) in order to test in 0g, -1c @ 17,000 MPH while hooked to StarLink and stress tested from the Home office.
-I built this with Starlink, StarShield, the ISS, Lunar Artemis and beyond in mind. Its sole purpose is Host Security.
+This project is intended for real-world stress conditions, including Low Earth Orbit (LEO) environments, high-latency satellite links (Starlink/StarShield), and terrestrial adversarial scenarios.
 
-*State is disposable. Enforcement is not.*
+Its sole purpose is **Host Security**.
+
+> *State is disposable. Enforcement is not.*
+
+---
 
 ## Sentinel Guarantees
- - Operates under corrupted state
- - Rebuilds state automatically
- - Atomic filesystem operations (no partial writes)
- - Service-safe execution (systemd hardened)
- - Minimal footprint, no external dependencies
+- Operates under corrupted state
+- Rebuilds state automatically
+- Atomic filesystem operations (no partial writes)
+- Service-safe execution (systemd hardened)
+- Minimal footprint, no external dependencies
 
-## Get Source
- - `git clone https://github.com/stnlabz/sentinel-daemon.git`
+---
 
 ## Build
  - `cd sentinel-daemon`
@@ -27,11 +29,12 @@ I built this with Starlink, StarShield, the ISS, Lunar Artemis and beyond in min
  
 ## Install
  - `sudo mv sentinel /usr/local/bin/sentinel`
- - Copy `sentinel.conf` to `/etc`
- - Setup '/var/lib/sentinel`
- - Setup 'var/log/sentinel` + `/var/log/sentinel/quarantine`
+ - Copy `etc/sentinel.conf` to `/etc/`
+ - Copy `/etc/systemd/system/sentinel.service` to `/etc/systemd/system/`
+ - Setup `/var/lib/sentinel`
+ - Setup `var/log/sentinel/` + `/var/log/sentinel/quarantine`
 
-*No I did not set this application up to auto-create these files or directories, quit being so lazy!*
+*Directories are intentionally not auto-created. Explicit control is required.*
  
 ## Update
 Please see the [Changelog](/changelog.md)
