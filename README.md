@@ -1,3 +1,7 @@
+![Architecture](https://img.shields.io/badge/Architecture-Linux-darkgreen)
+![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
+![License](https://img.shields.io/badge/License-TBD-lightgrey)
+![Sponsored](https://img.shields.io/badge/Sponsored-STN_Labz-blue)
 # sentinel-daemon
 The Sentinel Daemon for Ground, Space and Inter Terrestrial Security
 
@@ -23,6 +27,11 @@ I built this with Starlink, StarShield, the ISS, Lunar Artemis and beyond in min
  
 ## Install
  - `sudo mv sentinel /usr/local/bin/sentinel`
+ - Copy `sentinel.conf` to `/etc`
+ - Setup '/var/lib/sentinel`
+ - Setup 'var/log/sentinel` + `/var/log/sentinel/quarantine`
+
+*No I did not set this application up to auto-create these files or directories, quit being so lazy!*
  
 ## Update
 Please see the [Changelog](/changelog.md)
