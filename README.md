@@ -3,7 +3,7 @@
 ![License](https://img.shields.io/badge/License-TBD-lightgrey)
 ![Sponsored](https://img.shields.io/badge/Sponsored-STN_Labz-blue)
 
-# sentinel-daemon
+# Sentinel Daemon
 The Sentinel Daemon for Ground, Space and Interstellar Security
 
 **Version**: 0.5.7
@@ -33,10 +33,17 @@ Its sole purpose is **Host Security**.
  - `sudo mv sentinel /usr/local/bin/sentinel`
  - Copy `etc/sentinel.conf` to `/etc/`
  - Copy `/etc/systemd/system/sentinel.service` to `/etc/systemd/system/`
- - Setup `/var/lib/sentinel`
- - Setup `var/log/sentinel/` + `/var/log/sentinel/quarantine`
+ - Setup required directories:
+   - `/var/lib/sentinel`
+   - `var/log/sentinel/`
+   - `/var/log/sentinel/quarantine`
 
 *Directories are intentionally not auto-created. Explicit control is required.*
  
 ## Update
 Please see the [Changelog](/changelog.md)
+
+## Stn-Labz
+STN-Labz is founded and operated by a transgender woman, retired soldier, space enthusiast, and developer—building systems designed to hold under pressure.
+
+Cybersecurity and space development are not separate domains here. They are the same battlefield.
