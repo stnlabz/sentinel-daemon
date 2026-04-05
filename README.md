@@ -6,6 +6,8 @@
 # sentinel-daemon
 The Sentinel Daemon for Ground, Space and Interstellar Security
 
+**Version**: 0.5.7
+
 This project is intended for real-world stress conditions, including Low Earth Orbit (LEO) environments, high-latency satellite links (Starlink/StarShield), and terrestrial adversarial scenarios.
 
 Its sole purpose is **Host Security**.
