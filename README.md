@@ -1,3 +1,7 @@
+![Architecture](https://img.shields.io/badge/Architecture-Linux-darkgreen)
+![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
+![License](https://img.shields.io/badge/License-TBD-lightgrey)
+![Sponsored](https://img.shields.io/badge/Sponsored-STN_Labz-blue)
 # sentinel-daemon
 The Sentinel Daemon for Ground, Space and Inter Terrestrial Security
 
