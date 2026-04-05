@@ -27,6 +27,11 @@ I built this with Starlink, StarShield, the ISS, Lunar Artemis and beyond in min
  
 ## Install
  - `sudo mv sentinel /usr/local/bin/sentinel`
+ - Copy `sentinel.conf` to `/etc`
+ - Setup '/var/lib/sentinel`
+ - Setup 'var/log/sentinel` + `/var/log/sentinel/quarantine`
+
+*No I did not set this application up to auto-create these files or directories, quit being so lazy!*
  
 ## Update
 Please see the [Changelog](/changelog.md)
