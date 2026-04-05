@@ -1,2 +1,5 @@
 [2026-04-05 18:10:39] INFO: DAEMON_STOP Shutdown
-[2026-04-05 18:10:39] INFO: DAEMON_START Sentinel v0.5.6
+[2026-04-05 18:10:39] INFO: DAEMON_START Sentinel v0.5.7
+[2026-04-05 19:13:08] ALERT: RULE_VIOLATION /tmp/post_rebuild.sh
+[2026-04-05 19:13:08] ACTION: QUARANTINE_SUCCESS /var/log/sentinel/quarantine/post_rebuild.sh.0
+
