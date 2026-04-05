@@ -43,7 +43,7 @@ Its sole purpose is **Host Security**.
 ## Update
 Please see the [Changelog](/changelog.md)
 
-## Stn-Labz
+## STN-Labz
 STN-Labz is founded and operated by a transgender woman, retired soldier, space enthusiast, and developer—building systems designed to hold under pressure.
 
 Cybersecurity and space development are not separate domains here. They are the same battlefield.
