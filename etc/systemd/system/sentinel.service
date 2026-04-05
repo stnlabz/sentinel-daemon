@@ -1,0 +1,24 @@
+[Unit]
+Description=Sentinel Security Daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/sentinel
+Restart=always
+RestartSec=3
+
+# 🔒 containment
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+# allow only what it needs
+ReadWritePaths=/var/log/sentinel /var/lib/sentinel
+
+# drop risky capabilities
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target
