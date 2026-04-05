@@ -1,14 +1,13 @@
 # Changelog
 
 **Date/Time**: 2026-04-05T2052Z
-
-**Version**: 0.5.6
+**Version**: 0.5.7
 
 **Core Fixes**
- - Fixed systemd service startup failure (`status=226/NAMESPACE`)
+ - Fixed `systemd` service startup failure (`status=226/NAMESPACE`)
  - Corrected service containment issues while preserving required runtime access
  - Ensured proper execution under root context for enforcement operations
- - Restored full functionality when running as a service vs manual execution
+ - Restored full functionality when running as a `service` vs `manual execution`
 
 **Filesystem & Runtime Stability**
  - Enforced creation of required runtime paths:
