@@ -7,18 +7,25 @@ ExecStart=/usr/local/bin/sentinel
 Restart=always
 RestartSec=3
 
-# 🔒 containment
+# Containment
 NoNewPrivileges=true
-PrivateTmp=true
+PrivateTmp=false
 ProtectSystem=strict
-ProtectHome=true
+ProtectHome=read-only
 
-# allow only what it needs
-ReadWritePaths=/var/log/sentinel /var/lib/sentinel
+# Sentinel needs write access to quarantine files from configured watch dirs.
+# Keep runtime state narrow, while allowing enforcement on the default watched paths.
+ReadWritePaths=/var/log/sentinel /var/lib/sentinel /tmp /var/tmp /dev/shm /var/www
 
-# drop risky capabilities
-CapabilityBoundingSet=
-AmbientCapabilities=
+# /home is monitored by the default config. If quarantine from /home is needed,
+# add the specific home subtree here instead of making all home directories writable.
+ReadOnlyPaths=/home
+
+# Process enforcement needs CAP_KILL when kill_on_detect=1.
+CapabilityBoundingSet=CAP_KILL
+AmbientCapabilities=CAP_KILL
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
 
 [Install]
 WantedBy=multi-user.target
