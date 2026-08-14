@@ -7,6 +7,9 @@ ExecStart=/usr/local/bin/sentinel
 Restart=always
 RestartSec=3
 
+StateDirectory=sentinel
+LogsDirectory=sentinel
+
 # 🔒 containment
 NoNewPrivileges=true
 PrivateTmp=true
