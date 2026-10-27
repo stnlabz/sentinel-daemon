@@ -14,7 +14,7 @@ SERVICE  := etc/systemd/system/sentinel.service
 
 INSTALL  ?= install
 
-.PHONY: all clean install
+.PHONY: all clean install install-config install-service
 
 all: $(TARGET)
 
@@ -27,5 +27,9 @@ clean:
 install: all
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 0755 $(TARGET) $(DESTDIR)$(BINDIR)/$(TARGET)
+
+install-config:
 	$(INSTALL) -m 0644 -D $(CONFIG) $(DESTDIR)$(SYSCONFDIR)/sentinel.conf
+
+install-service:
 	$(INSTALL) -m 0644 -D $(SERVICE) $(DESTDIR)$(UNITDIR)/sentinel.service
