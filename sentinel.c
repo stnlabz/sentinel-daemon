@@ -62,6 +62,8 @@ static char HEARTBEAT_FILE[MAX_PATH_LEN]  = DEFAULT_HEARTBEAT_FILE;
 static int LOOP_INTERVAL = DEFAULT_LOOP;
 static int MAX_ACTIONS   = DEFAULT_MAX_ACTIONS;
 static int KILL_ON_DETECT = DEFAULT_KILL_DETECT;
+/* Safe by default: alert without file quarantine or process termination. */
+static int OBSERVE_ONLY = 1;
 
 /* =========================
    RUNTIME
@@ -384,6 +386,9 @@ static void load_config(void)
             LOOP_INTERVAL = atoi(val);
         } else if (strcmp(key, "max_actions_per_cycle") == 0) {
             MAX_ACTIONS = atoi(val);
+        } else if (strcmp(key, "observe_only") == 0) {
+            if (strcmp(val, "0") == 0 || strcmp(val, "1") == 0)
+                OBSERVE_ONLY = (val[0] == '1');
         } else if (strcmp(key, "kill_on_detect") == 0) {
             KILL_ON_DETECT = atoi(val);
         }
@@ -625,6 +630,9 @@ static void quarantine_file(const char *full_path, const char *filename)
     if (!full_path || !filename)
         return;
 
+    if (OBSERVE_ONLY)
+        return;
+
     if (actions_this_cycle >= MAX_ACTIONS)
         return;
 
@@ -658,7 +666,7 @@ static void enforce_exec(pid_t pid, const char *exe_path, const char *event)
     snprintf(msg, sizeof(msg), "pid=%ld exe=%s", (long)pid, exe_path);
     slog("ALERT", event, msg);
 
-    if (KILL_ON_DETECT) {
+    if (!OBSERVE_ONLY && KILL_ON_DETECT) {
         if (kill(pid, SIGTERM) == 0) {
             slog("ACTION", "PROCESS_TERMINATED", msg);
         } else {
@@ -803,6 +811,7 @@ int main(void)
     signal(SIGTERM, handle_signal);
 
     slog("INFO", "DAEMON_START", "Sentinel v0.5.7");
+    slog("INFO", "ENFORCEMENT_MODE", OBSERVE_ONLY ? "OBSERVE_ONLY" : "ACTIVE");
 
     if (state_rebuilt) {
         slog("INFO", "STATE_REBUILT", STATE_FILE);
