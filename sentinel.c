@@ -719,7 +719,7 @@ static void scan_directory(const watch_rule *rule)
             continue;
         }
 
-        if (match_ext(dir->d_name, ".sh,.exe")) {
+        if (match_ext(dir->d_name, ".sh,.exe,.elf,.so,.py,.pl,.php,.cgi,.bin")) {
             slog("ALERT", "THREAT_DETECTED", full);
             quarantine_file(full, dir->d_name);
         }
@@ -780,7 +780,7 @@ static void scan_processes(void)
                 break;
             }
 
-            if (match_ext(exe_name, ".sh,.exe")) {
+            if (match_ext(exe_name, ".sh,.exe,.elf,.so,.py,.pl,.php,.cgi,.bin")) {
                 enforce_exec(pid, exe_path, "EXEC_THREAT");
                 break;
             }
