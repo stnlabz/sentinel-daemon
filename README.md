@@ -64,9 +64,9 @@ is /var/lib/sentinel/heartbeat and contains the last completed heartbeat's Unix 
 See [Changelog](changelog.md) for release history.
 
 ## STN-Labz
-STN-Labz is founded and operated by a 🏳️‍⚧️ transgender woman, retired soldier, space enthusiast, and developer.
+STN-Labz is founded and operated by a retired soldier, space enthusiast, and developer.
 
-It operates at the intersection of cybersecurity and space development—focused on building resilient systems for environments where failure is not an option.
+It operates at the intersection of engineering systems worthy of trust when trust matters most.
 
 ## Host-wide observation (default)
 
