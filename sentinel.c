@@ -1,7 +1,7 @@
 /**
  * Sentinel Daemon
  *
- * v0.5.7 Execution Awareness + Heartbeat
+ * v0.6.0 Host-wide Observation + Heartbeat
  *
  * Build:
  *   gcc -Wall -Wextra -O2 -o sentinel sentinel.c
@@ -19,7 +19,9 @@
 #include <limits.h>
 #include <errno.h>
 
-#define CONFIG_FILE "/etc/sentinel.conf"
+static const char *CONFIG_FILE = "/etc/sentinel.conf";
+static int HOST_MODE = 1;
+static long LOG_MAX_SIZE = 5242880;
 
 #define DEFAULT_LOG_FILE        "/var/log/sentinel/sentinel.log"
 #define DEFAULT_Q_DIR           "/var/log/sentinel/quarantine"
@@ -103,6 +105,12 @@ static void handle_signal(int sig)
 /* ========================= */
 static void slog(const char *level, const char *event, const char *extra)
 {
+    struct stat log_st;
+    char rotated[MAX_PATH_LEN + 3];
+    if (stat(LOG_FILE, &log_st) == 0 && log_st.st_size >= LOG_MAX_SIZE) {
+        snprintf(rotated, sizeof(rotated), "%s.1", LOG_FILE);
+        if (rename(LOG_FILE, rotated) != 0) return;
+    }
     FILE *fp = fopen(LOG_FILE, "a");
     if (!fp) {
         return;
@@ -366,7 +374,14 @@ static void load_config(void)
         trim(key);
         trim(val);
 
-        if (strcmp(key, "watch_dir") == 0) {
+        if (strcmp(key, "monitor_mode") == 0) {
+            if (!strcmp(val, "host")) HOST_MODE = 1;
+            else if (!strcmp(val, "directories")) HOST_MODE = 0;
+            else { fprintf(stderr, "Invalid monitor_mode\n"); exit(1); }
+        } else if (strcmp(key, "log_max_size") == 0) {
+            LOG_MAX_SIZE = atol(val);
+            if (LOG_MAX_SIZE < 65536) LOG_MAX_SIZE = 65536;
+        } else if (strcmp(key, "watch_dir") == 0) {
             add_watch_dir(val);
         } else if (strcmp(key, "allow_ext") == 0 && WATCH_COUNT) {
             safe_copy(WATCH[WATCH_COUNT - 1].allow, val, sizeof(WATCH[WATCH_COUNT - 1].allow));
@@ -791,17 +806,25 @@ static void scan_processes(void)
 }
 
 /* ========================= */
-int main(void)
+#include "host_monitor.h"
+
+int main(int argc, char **argv)
 {
     int i;
-
+    if (argc == 3 && !strcmp(argv[1], "--config")) CONFIG_FILE = argv[2];
+    else if (argc != 1) {
+        fprintf(stderr, "Usage: %s [--config PATH]\n", argv[0]);
+        return 2;
+    }
     load_config();
+    if (LOOP_INTERVAL < 1) LOOP_INTERVAL = 1;
+    if (HOST_MODE) OBSERVE_ONLY = 1;
 
     if (ensure_runtime_paths() != 0) {
         return 1;
     }
 
-    if (!load_state()) {
+    if (!HOST_MODE && !load_state()) {
         if (!rebuild_state()) {
             return 1;
         }
@@ -810,8 +833,10 @@ int main(void)
     signal(SIGINT, handle_signal);
     signal(SIGTERM, handle_signal);
 
-    slog("INFO", "DAEMON_START", "Sentinel v0.5.7");
+    slog("INFO", "DAEMON_START", "Sentinel v0.6.0");
     slog("INFO", "ENFORCEMENT_MODE", OBSERVE_ONLY ? "OBSERVE_ONLY" : "ACTIVE");
+
+    slog("INFO", "MONITOR_MODE", HOST_MODE ? "HOST filesystem=/ processes=all" : "DIRECTORIES");
 
     if (state_rebuilt) {
         slog("INFO", "STATE_REBUILT", STATE_FILE);
@@ -824,6 +849,9 @@ int main(void)
     while (running) {
         actions_this_cycle = 0;
 
+        if (HOST_MODE) {
+            host_scan();
+        } else {
         for (i = 0; i < WATCH_COUNT; i++) {
             scan_directory(&WATCH[i]);
 
@@ -834,6 +862,7 @@ int main(void)
         scan_processes();
 
         save_state();
+        }
 
         if (write_heartbeat() != 0) {
             slog("ERROR", "HEARTBEAT_WRITE_FAILED", HEARTBEAT_FILE);
@@ -842,7 +871,7 @@ int main(void)
         sleep(LOOP_INTERVAL);
     }
 
-    save_state();
+    if (!HOST_MODE) save_state();
     slog("INFO", "DAEMON_STOP", "Shutdown");
 
     return 0;

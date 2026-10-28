@@ -18,7 +18,7 @@ INSTALL  ?= install
 
 all: $(TARGET)
 
-$(TARGET): $(SOURCE)
+$(TARGET): $(SOURCE) host_monitor.h
 	$(CC) $(CFLAGS) -o $@ $<
 
 clean:

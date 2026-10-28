@@ -1,0 +1,6 @@
+
+/sentinel
+/test-host-monitor
+/.host-test-*
+/deployment-backup-*/
+/core

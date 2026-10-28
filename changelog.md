@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.6.0 - Host-wide observation
+
+- Add recursive metadata snapshots from / and process observation independent of watch rules.
+- Replace the host-mode fixed file/PID limits with dynamic full-path and process-identity tracking.
+- Report coverage gaps, preserve entries on incomplete scans, and escape untrusted log text.
+- Rotate logs and expose scan counts/duration; retain directory mode as an explicit compatibility option.
+- Give the service read-only visibility into home directories, real temporary directories and cross-user processes.
+- Add sanitizer-tested regression coverage; document polling and namespace limits.
+
+## v0.5.7
+
 **Date/Time**: 2026-04-05T2052Z
 **Version**: 0.5.7
 

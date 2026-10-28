@@ -12,16 +12,16 @@ LogsDirectory=sentinel
 
 # 🔒 containment
 NoNewPrivileges=true
-PrivateTmp=true
+PrivateTmp=false
 ProtectSystem=strict
-ProtectHome=true
+ProtectHome=read-only
 
 # allow only what it needs
 ReadWritePaths=/var/log/sentinel /var/lib/sentinel
 
-# drop risky capabilities
-CapabilityBoundingSet=
-AmbientCapabilities=
+# Read protected metadata and process executable links across users.
+CapabilityBoundingSet=CAP_DAC_READ_SEARCH CAP_SYS_PTRACE
+AmbientCapabilities=CAP_DAC_READ_SEARCH CAP_SYS_PTRACE
 
 [Install]
 WantedBy=multi-user.target
